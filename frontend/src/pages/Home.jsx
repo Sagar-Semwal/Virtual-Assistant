@@ -17,7 +17,9 @@ import { GiHamburgerMenu, GiCrossedBones } from "react-icons/gi";
 let voices = [];
 
 const Home = () => {
+ const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const [listening, setListening] = useState(false);
+ const [speaking, setSpeaking] = useState(false);
   const capitalizeFirst = (text) => {
     if (!text) return "";
     return text.charAt(0).toUpperCase() + text.slice(1);
@@ -81,34 +83,38 @@ const Home = () => {
 
   // ---------------- TEXT TO SPEECH ----------------
 
-  const speak = (text) => {
-    if (!text) return;
+const speak = (text) => {
+  if (!text) return;
 
-    synth.cancel(); // stop any current speech first
+  synth.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
+  const utterance = new SpeechSynthesisUtterance(text);
 
-    const maleVoice = voices.find(
-      (voice) => voice.name === "Google UK English Male"
-    );
+  const maleVoice = voices.find(
+    (voice) => voice.name === "Google UK English Male"
+  );
 
-    if (maleVoice) {
-      utterance.voice = maleVoice;
-    }
+  if (maleVoice) {
+    utterance.voice = maleVoice;
+  }
 
-    isSpeakingRef.current = true;
+  isSpeakingRef.current = true;
+  setSpeaking(true);
 
-    utterance.onend = () => {
-      setAiText("");
-      isSpeakingRef.current = false;
+  utterance.onend = () => {
+    setAiText("");
+    isSpeakingRef.current = false;
+    setSpeaking(false);
 
+    if (!isMobile) {
       setTimeout(() => {
-        startRecognition(); // delay avoids race condition with mic picking up tail of speech
+        startRecognition();
       }, 800);
-    };
-
-    synth.speak(utterance);
+    }
   };
+
+  synth.speak(utterance);
+};
 
   // ---------------- HANDLE COMMAND ----------------
 
@@ -229,7 +235,7 @@ const Home = () => {
     let isMounted = true;
 
     const startTimeout = setTimeout(() => {
-      if (isMounted && !isSpeakingRef.current && !isRecognizingRef.current) {
+      if (!isMobile && isMounted && !isSpeakingRef.current && !isRecognizingRef.current) {
         try {
           recognition.start();
         } catch (e) {
@@ -249,7 +255,7 @@ const Home = () => {
       isRecognizingRef.current = false;
       setListening(false);
 
-      if (isMounted && !isSpeakingRef.current) {
+      if (!isMobile && isMounted && !isSpeakingRef.current) {
         setTimeout(() => {
           if (isMounted) {
             try {
@@ -266,7 +272,7 @@ const Home = () => {
       isRecognizingRef.current = false;
       setListening(false);
 
-      if (event.error !== "aborted" && isMounted && !isSpeakingRef.current) {
+      if (!isMobile && event.error !== "aborted" && isMounted && !isSpeakingRef.current) {
         setTimeout(() => {
           if (isMounted) {
             try {
@@ -637,6 +643,29 @@ const Home = () => {
         >
           {userText ? capitalizeFirst(userText) : aiText ? capitalizeFirst(aiText) : null}
         </h1>
+
+       {isMobile && !listening && !aiText && !speaking && (
+  <button
+    onClick={startRecognition}
+    className="
+      mt-6
+      px-6
+      py-3
+      rounded-full
+      bg-purple-600
+      text-white
+      font-medium
+      lg:hidden
+      transition-all
+      duration-300
+      hover:bg-purple-700
+    "
+  >
+    🎤 Tap to Talk
+  </button>
+)}
+
+      
 
 
         {/* Listening Status
