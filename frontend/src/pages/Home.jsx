@@ -112,82 +112,65 @@ const Home = () => {
 
   // ---------------- HANDLE COMMAND ----------------
 
-  const handleCommand = (data) => {
+ const handleCommand = (data) => {
     if (!data) return;
-
     const { type, userInput, message, response } = data;
 
     if (type === "google_search") {
       const query = encodeURIComponent(userInput);
       window.open(`https://www.google.com/search?q=${query}`, "_blank");
     }
-
     else if (type === "youtube_search") {
       const query = encodeURIComponent(userInput);
       window.open(`https://www.youtube.com/results?search_query=${query}`, "_blank");
     }
-
     else if (type === "youtube_play") {
       const query = encodeURIComponent(userInput);
       window.open(`https://www.youtube.com/results?search_query=${query}`, "_blank");
     }
-
     else if (type === "calculator_open") {
       window.open("https://www.google.com/search?q=calculator", "_blank");
     }
-
     else if (type === "instagram_open") {
       window.open("https://www.instagram.com/", "_blank");
     }
-
     else if (type === "facebook_open") {
       window.open("https://www.facebook.com/", "_blank");
     }
     else if (type === "youtube_open") {
-  window.open("https://www.youtube.com/", "_blank");
-}
-
+      window.open("https://www.youtube.com/", "_blank");
+    }
     else if (type === "weather-show") {
       window.open("https://www.google.com/search?q=weather", "_blank");
     }
-
     else if (type === "whatsapp_open") {
       window.open("https://web.whatsapp.com/", "_blank");
     }
-
     else if (type === "whatsapp_open_contact") {
       const contactName = userInput.toLowerCase().trim();
       const phoneNumber = contacts[contactName];
-
       if (phoneNumber) {
         window.open(`https://web.whatsapp.com/send?phone=${phoneNumber}`, "_blank");
       } else {
         speak(`Sorry, I don't have ${userInput} in your contacts.`);
+        return; // avoid double speak() below
       }
     }
-
     else if (type === "whatsapp_message") {
       const contactName = userInput.toLowerCase().trim();
       const phoneNumber = contacts[contactName];
-
       if (phoneNumber) {
         const encodedMessage = encodeURIComponent(message);
         window.open(`https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`, "_blank");
       } else {
         speak(`Sorry, I don't have ${userInput} in your contacts.`);
+        return; // avoid double speak() below
       }
     }
 
-    else if (
-      type === "get_time" ||
-      type === "get_date" ||
-      type === "get_day" ||
-      type === "get_month" ||
-      type === "get_date_time" ||
-      type === "general"
-    ) {
-      speak(response);
-    }
+    // Speak the response for every command type — this clears aiText and
+    // properly restarts recognition after ANY command, not just voice-only ones
+    speak(response);
   };
 
   // ---------------- LOAD VOICES + GREETING ----------------
