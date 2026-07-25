@@ -612,7 +612,8 @@ const Home = () => {
             className="
               w-full
               h-full
-              object-cover
+              object-contain
+           mix-blend-screen
             "
           />
         </div>
