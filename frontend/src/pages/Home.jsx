@@ -612,9 +612,8 @@ const Home = () => {
             className="
               w-full
               h-full
-              object-contain
-           mix-blend-screen
-            "
+              object-cover
+        "
           />
         </div>
 
@@ -640,7 +639,7 @@ const Home = () => {
     sm:h-[200px]
     md:w-[240px]
     md:h-[250px]
-    object-contain
+    object-cover
     mix-blend-screen
     mt-6
     sm:mt-10
