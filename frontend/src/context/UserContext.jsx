@@ -7,7 +7,7 @@ export const UserDataContext=createContext()
 
 
 const UserContext = ({children}) => {
-    const serverUrl="http://localhost:8000"
+    const serverUrl="https://virtual-assistant-backend-7lfv.onrender.com"
     const [userData,setUserData]=useState(null)
     const [frontEndImage,setFrontEndImage]=useState(null)
       const [backEndImage,setBackEndImage]=useState(null)
