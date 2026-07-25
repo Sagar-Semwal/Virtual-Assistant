@@ -629,11 +629,22 @@ const Home = () => {
           Your personal virtual assistant
         </p>
 
-        <img
-          src={aiText ? aiImg : userImg}
-          alt={aiText ? "AI Assistant" : "User"}
-          className="w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] md:w-[240px] md:h-[250px] object-cover mix-blend-screen mt-6 sm:mt-10"
-        />
+      <img
+  src={aiText ? aiImg : userImg}
+  alt={aiText ? "AI Assistant" : "User"}
+  className="
+    w-[160px]
+    h-[160px]
+    sm:w-[200px]
+    sm:h-[200px]
+    md:w-[240px]
+    md:h-[250px]
+    object-contain
+    mix-blend-screen
+    mt-6
+    sm:mt-10
+  "
+/>
 
         <h1
           className={`mt-6 sm:mt-10 text-lg sm:text-2xl md:text-3xl font-semibold tracking-wide text-center px-4 max-w-[90%] sm:max-w-lg md:max-w-xl mx-auto break-words transition-all duration-300 ${
