@@ -11,6 +11,7 @@ import { GiHamburgerMenu, GiCrossedBones } from "react-icons/gi";
  const contacts = {
   bro: import.meta.env.VITE_CONTACT_BRO,
   shivam: import.meta.env.VITE_CONTACT_SHIVAM,
+  yashu:import.meta.env.VITE_CONTACT_YASHU
 };
 
 let voices = [];
